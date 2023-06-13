@@ -25,3 +25,13 @@ In conf.yaml we can choose the parameters:
 - raw: 'in/'
 - preproc: {'skip', 'remove_background', 'gaussian', 'median', 'bilateral', 'unsharp'}
 
+# Using the `pegi3s/classify` Docker image
+
+The `pegi3s/classify` Docker image contains these files and all the required dependencies. 
+
+To use it, simply run the following commands, changing `/your/data/dir` with the path to the directory that contains your images.
+
+```
+xhost +
+docker run --rm -ti -e USERID=$UID -e USER=$USER -e DISPLAY=$DISPLAY -v /var/db:/var/db:Z -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME/.Xauthority:/home/developer/.Xauthority -v "/your/data/dir:/data" -v /var/run/docker.sock:/var/run/docker.sock -v /tmp:/tmp pegi3s/classify bash -c "conda init bash && cp /data/conf.yaml /conf && python /opt/main.py -c conf.yaml -r full -i /data/Vir_teste.tif"
+```
